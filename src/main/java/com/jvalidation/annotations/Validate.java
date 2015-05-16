@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD,ElementType.TYPE})
 public @interface Validate {
 	
-	public String preLogMessage();
-	public String postLogMessage();
+	public String preLogMessage() default "";
+	public String postLogMessage() default "";
 	
 }

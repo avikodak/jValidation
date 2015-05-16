@@ -1,5 +1,8 @@
 package com.jvalidation.aspects;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -9,18 +12,40 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+
+import com.jvalidation.annotations.Validate;
 
 @Aspect
 @Component("testAspect")
 public class TestAspect {
 
-	@Pointcut("execution(public * *(..)),")
+	@Pointcut("execution(public * *(..))")
 	public void publicPointCut() {}
 	
 	@Before("publicPointCut()")
-	public void test(){
+	public void test(JoinPoint joinPoint){
 		System.out.println("Before Aspect");
+		Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+		Class<?>[] parameters = method.getParameterTypes();
+		for (Class<?> argument : parameters) {
+			
+			Annotation annotation = argument.getAnnotation(Validate.class);
+			if(annotation != null){
+				System.out.println("Has validate annotation");
+			}else{
+				System.out.println("Has no validate annotation");
+			}
+			while(argument.getSuperclass() != Object.class){
+				annotation = argument.getAnnotation(Validate.class);
+				if(annotation != null){
+					System.out.println("Has validate annotation");
+				}else{
+					System.out.println("Has no validate annotation");
+				}
+			}
+		}
 	}
 	
 	@After("publicPointCut()")
