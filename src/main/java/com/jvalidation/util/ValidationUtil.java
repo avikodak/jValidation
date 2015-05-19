@@ -3,8 +3,6 @@ package com.jvalidation.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.jvalidation.annotations.Max;
-
 public class ValidationUtil {
 
 	public static <A extends Annotation> void handleEmailValidation(Object obj,Field field,Class<A> annotation) throws IllegalArgumentException, IllegalAccessException{
