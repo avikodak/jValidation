@@ -7,10 +7,20 @@ import com.jvalidation.annotations.Validate;
 @Validate
 public class TestInputVO {
 
-	private String id;
+	@NotNull
+	public String id;
 	private String name;
 	
-	@NotNull
+	
+	public TestInputVO() {
+		super();
+	}
+
+	public TestInputVO(String id) {
+		super();
+		this.id = id;
+	}
+
 	public String getId() {
 		return id;
 	}

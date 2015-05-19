@@ -5,13 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD,ElementType.PARAMETER,ElementType.LOCAL_VARIABLE})
+@Target({ElementType.FIELD,ElementType.LOCAL_VARIABLE,ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Range {
-
+public @interface Min {
+	
 	public String logMessage() default "";
 	public String errorMessage() default "";
-	public String min();
-	public String max();
+	public String minValue() default "";
 	
 }

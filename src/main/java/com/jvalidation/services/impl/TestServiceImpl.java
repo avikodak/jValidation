@@ -16,7 +16,7 @@ public class TestServiceImpl implements AbstractTestService{
 	}
 
 	public void testAnnotation(TestInputVO testInputVO) throws Exception{
-		System.out.println("This is a input vo test");
+		//System.out.println("This is a input vo test");
 	}
 	
 	public Integer testServiceReturn() throws Exception{
@@ -30,7 +30,8 @@ public class TestServiceImpl implements AbstractTestService{
 	public static void main(String[] args) throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		AbstractTestService obj = (AbstractTestService)context.getBean("testService");
-		obj.testAnnotation(new TestInputVO());
+		TestInputVO test = new TestInputVO("asud");
+		obj.testAnnotation(test);
 		//obj.testService("test");
 		//obj.testServiceReturn();
 		//obj.name();

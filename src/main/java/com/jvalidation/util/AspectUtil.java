@@ -12,9 +12,8 @@ public class AspectUtil {
 		return ((MethodSignature)joinPoint.getSignature()).getMethod();
 	}
 	
-	public static Class<?>[] getParameters(JoinPoint joinPoint){
-		Method method = getMethod(joinPoint);
-		return method.getParameterTypes();
+	public static Object[] getParameters(JoinPoint joinPoint){
+		return joinPoint.getArgs();
 	}
 	
 	public static <A extends Annotation> Boolean isAnnotationPresent(Class<?> clazz,Class<A> annotationClazz){

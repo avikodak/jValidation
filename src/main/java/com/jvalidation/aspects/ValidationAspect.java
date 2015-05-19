@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import com.jvalidation.annotations.Email;
 import com.jvalidation.annotations.Empty;
+import com.jvalidation.annotations.Max;
+import com.jvalidation.annotations.Min;
 import com.jvalidation.annotations.Mobile;
 import com.jvalidation.annotations.NotEmpty;
 import com.jvalidation.annotations.NotNull;
@@ -25,46 +27,53 @@ import com.jvalidation.util.ValidationUtil;
 @Component("validationAspect")
 public class ValidationAspect {
 
-	@Pointcut("execution(public * *(..))")
+	@Pointcut("execution(* *(..))")
 	public void validationPointcut(){}
 	
-	@Before("validationPointcut")
-	public void beforeExecution(JoinPoint joinPoint){
+	@Before("validationPointcut()")
+	public void beforeExecution(JoinPoint joinPoint) throws Exception{
 		if(joinPoint.getArgs().length > 0){
 			performValidation(joinPoint);
 		}
 	}
 
-	private void performValidation(JoinPoint joinPoint) {
-		Class<?>[] parameters = AspectUtil.getParameters(joinPoint);
-		for (Class<?> parameter : parameters) {
+	private void performValidation(JoinPoint joinPoint) throws Exception{
+		Object[] arguments = AspectUtil.getParameters(joinPoint);
+		for (Object object : arguments) {
+			Class<?> parameter = object.getClass();
 			if(AspectUtil.isAnnotationPresent(parameter, Validate.class)){
-				Field[] fields = parameter.getFields();
+				Field[] fields = parameter.getDeclaredFields();
 				for (Field field : fields) {
 					for (Annotation annotation : field.getAnnotations()) {
-						if(annotation.getClass() == NotNull.class){
-							ValidationUtil.handleNotNullValidation(field, annotation);
+						if(annotation.annotationType() == NotNull.class){
+							ValidationUtil.handleNotNullValidation(object,field, annotation.annotationType());
 						}
-						if(annotation.getClass() == Null.class){
-							ValidationUtil.handleNullValidation(field, annotation);
+						if(annotation.annotationType() == Null.class){
+							ValidationUtil.handleNullValidation(object,field, annotation.annotationType());
 						}
-						if(annotation.getClass() == Empty.class){
-							ValidationUtil.handleEmptyValidation(field, annotation);
+						if(annotation.annotationType() == Empty.class){
+							ValidationUtil.handleEmptyValidation(object,field, annotation.annotationType());
 						}
-						if(annotation.getClass() == NotEmpty.class){
-							ValidationUtil.handleNotEmptyValidation(field, annotation);
+						if(annotation.annotationType() == NotEmpty.class){
+							ValidationUtil.handleNotEmptyValidation(object,field, annotation.annotationType());
 						}
-						if(annotation.getClass() == Range.class){
-							ValidationUtil.handleRangeValidation(field, annotation);
+						if(annotation.annotationType() == Range.class){
+							ValidationUtil.handleRangeValidation(object,field, annotation.annotationType());
 						}
-						if(annotation.getClass() == Email.class){
-							ValidationUtil.handleEmailValidation(field, annotation);
+						if(annotation.annotationType() == Email.class){
+							ValidationUtil.handleEmailValidation(object,field, annotation.annotationType());
 						}
-						if(annotation.getClass() == Mobile.class){
-							ValidationUtil.handleMobileValidation(field, annotation);
+						if(annotation.annotationType() == Mobile.class){
+							ValidationUtil.handleMobileValidation(object,field, annotation.annotationType());
 						}
-						if(annotation.getClass() == Regex.class){
-							ValidationUtil.handleRegexValidation(field, annotation);
+						if(annotation.annotationType() == Regex.class){
+							ValidationUtil.handleRegexValidation(object,field, annotation.annotationType());
+						}
+						if(annotation.annotationType() == Min.class){
+							ValidationUtil.handleMinValidation(object, field,annotation.annotationType());
+						}
+						if(annotation.annotationType() == Max.class){
+							ValidationUtil.handleMaxValidation(object, field,annotation.annotationType());
 						}
 					}
 				}

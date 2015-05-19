@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import com.jvalidation.annotations.Validate;
 
 @Aspect
-@Component("testAspect")
+//@Component("testAspect")
 public class TestAspect {
 
 	@Pointcut("execution(public * *(..))")
