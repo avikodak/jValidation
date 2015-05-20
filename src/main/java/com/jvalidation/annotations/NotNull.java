@@ -8,5 +8,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD,ElementType.PARAMETER,ElementType.LOCAL_VARIABLE,ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NotNull {
-
+	
+	public String logMessage() default "";
+	public String errorMessage() default "";
+	
 }

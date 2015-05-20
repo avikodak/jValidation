@@ -9,4 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Mobile {
 
+	public String logMessage() default "";
+	public String errorMessage() default "";
+	
 }
